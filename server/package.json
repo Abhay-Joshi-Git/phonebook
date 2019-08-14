@@ -1,0 +1,24 @@
+{
+  "name": "phonebook-server",
+  "version": "1.0.0",
+  "description": "API server for phonebook",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "author": "Abhay Joshi",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cookie-session": "^1.3.3",
+    "express": "^4.17.1",
+    "lodash": "^4.17.15",
+    "path-parser": "^4.2.0",
+    "uuid": "^3.3.2"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.1"
+  }
+}
