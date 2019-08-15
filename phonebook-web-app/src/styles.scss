@@ -20,3 +20,7 @@ $dark-theme:   mat-dark-theme($dark-primary, $dark-accent, $dark-warn);
 html, body {
   height: 100vh;
 }
+
+.text-align-center {
+  text-align: center;
+}
