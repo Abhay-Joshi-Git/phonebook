@@ -1,6 +1,8 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @import "~normalize.css/normalize.css";
 @import '~@angular/material/theming';
+@import './layout.scss';
+@import './commonComponent.scss';
 
 $primary: mat-palette($mat-indigo);
 $accent:  mat-palette($mat-pink, A200, A100, A400);
@@ -17,15 +19,8 @@ $dark-theme:   mat-dark-theme($dark-primary, $dark-accent, $dark-warn);
   @include angular-material-theme($dark-theme);
 }
 
-html, body {
-  height: 100vh;
-}
 
-.text-align-center {
-  text-align: center;
-}
-
-.alternate-rows .mat-row:nth-child(even){
+.color-alternate-rows .mat-row:nth-child(even){
   background-color: #f2f2f2;
 }
 

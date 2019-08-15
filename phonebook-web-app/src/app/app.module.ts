@@ -13,6 +13,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { appReducers } from './store';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { PhoneBookRecordEditingComponent } from './phone-book/record-editing/record-editing.component';
 
 export function ngrxDevTools() {
   return environment.production ? [] : StoreDevtoolsModule.instrument();
@@ -22,7 +23,8 @@ export function ngrxDevTools() {
   declarations: [
     AppComponent,
     PhoneBookComponent,
-    ToolBarComponent
+    ToolBarComponent,
+    PhoneBookRecordEditingComponent,
   ],
   imports: [
     BrowserModule,
@@ -37,6 +39,9 @@ export function ngrxDevTools() {
     ngrxDevTools(),
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [
+    PhoneBookRecordEditingComponent
+  ]
 })
 export class AppModule { }

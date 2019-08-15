@@ -1,12 +1,19 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { PhoneBookRepository } from './store/repository.service';
-import { PhoneBookRecord } from './store/state';
-import { Observable, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { MatTableDataSource } from '@angular/material/table';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatDialog } from '@angular/material/dialog';
+import { Observable, Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+import { PhoneBookRepository } from './store/repository.service';
+import { PhoneBookRecord } from './store/state';
+import {
+    PhoneBookRecordEditingComponent,
+    PhoneBookRecordEditData,
+    PhoneBookRecordEditType
+} from './record-editing/record-editing.component';
 
 interface PhoneBookRecordTableItem extends PhoneBookRecord {
     phoneNumbersStr: string;
@@ -30,7 +37,8 @@ export class PhoneBookComponent implements OnInit, OnDestroy {
 
     constructor(
         private readonly phoneBookRepository: PhoneBookRepository,
-        private readonly breakpointObserver: BreakpointObserver
+        private readonly breakpointObserver: BreakpointObserver,
+        private dialog: MatDialog,
     ) {}
 
     ngOnInit() {
@@ -58,5 +66,14 @@ export class PhoneBookComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         this.phoneBookSubscription.unsubscribe();
         this.breakPointsSubscription.unsubscribe();
+    }
+
+    addRecord() {
+        const editDialogData: PhoneBookRecordEditData = {
+            type: PhoneBookRecordEditType.ADD
+        };
+        this.dialog.open(PhoneBookRecordEditingComponent, {
+            data: editDialogData
+        });
     }
 }

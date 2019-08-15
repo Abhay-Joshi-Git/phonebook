@@ -1,0 +1,32 @@
+<section>
+    <header>
+        <h3>{{title}}</h3>
+    </header>
+    <form
+        [formGroup]="recordEditForm"
+        (ngSubmit)="onSubmit()"
+    >
+        <fieldset>
+            <mat-form-field>
+                <input
+                    matInput
+                    type="text"
+                    placeholder="Name"
+                    [formControl]="recordEditForm.get('name')"
+                    name="name"
+                    required
+                />
+                <mat-error *ngIf="true">name is required</mat-error>
+            </mat-form-field>
+        </fieldset>
+        <div fxLayoutAlign="end center"fxLayoutGap="8px">
+            <button type="submit"
+                    mat-raised-button
+                    color="primary"
+                    [disabled]="recordEditForm.invalid || loading"
+            >
+                Save
+            </button>
+        </div>
+    </form>
+</section>

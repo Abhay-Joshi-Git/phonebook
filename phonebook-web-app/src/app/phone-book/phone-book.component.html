@@ -9,8 +9,17 @@
             (keyup)="applyFilter($event.target.value)"
         />
     </mat-form-field>
-    <div class="mat-elevation-z8 w-full mt-2">
-        <mat-table [dataSource]="dataSource" class="w-full alternate-rows" matSort>
+    <div class="mat-elevation-z8 relative">
+        <button
+            mat-mini-fab
+            class="fab-button-top-right add-button"
+            color="primary"
+            title="Add Record"
+            (click)="addRecord()"
+        >
+            <mat-icon aria-hidden="false" aria-label="add contact icon" class="add-icon">add</mat-icon>
+        </button>
+        <mat-table [dataSource]="dataSource" class="phone-book-table mat-elevation-z8 color-alternate-rows" matSort>
             <ng-container matColumnDef="name">
                 <mat-header-cell *matHeaderCellDef mat-sort-header
                     >Name</mat-header-cell
@@ -45,7 +54,7 @@
             [style.display]="isMobile ? 'none' : 'block'"
             [pageSize]="10"
             [pageSizeOptions]="[1, 5, 10, 25, 100]"
-            class="my-1"
+            class="paginator-center"
         >
         </mat-paginator>
     </div>

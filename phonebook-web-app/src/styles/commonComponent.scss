@@ -1,0 +1,17 @@
+.fab-button-bottom-right {
+    position: absolute !important;
+    right: 5px;
+    bottom: 5px;
+    z-index: 9999;
+}
+
+.fab-button-top-right {
+    position: absolute !important;
+    right: 10px;
+    top: 10px;
+    z-index: 9999;
+}
+
+.paginator-center .mat-paginator-container  {
+    justify-content: center;
+}
