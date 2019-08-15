@@ -6,15 +6,18 @@ const _ = require("lodash");
 const notValidRecordErrorMessage = 'request phone number is not of valid structure';
 
 function getRecordByName(name) {
-    return _.find(phoneBookRecords, { name })
+    return _.find(phoneBookRecords, { name });
 }
 
 function isNumberPresentInRecords(phoneNumber) {
-    return _.find(phoneBookRecords, (item) =>  item.phoneNumbers.includes(phoneNumber) )
+    return _.find(phoneBookRecords, (item) =>  item.phoneNumbers.includes(phoneNumber) );
 }
 
 function getRecordByNumbers(numbers) {
-    return _.find(phoneBookRecords, (item) =>  _.intersection(item.phoneNumbers, numbers) )
+    return _.find(phoneBookRecords, (item) =>  {
+        const commonNumbers = _.intersection(item.phoneNumbers, numbers);
+        return commonNumbers && commonNumbers.length
+    })
 }
 
 function isRecordValid(item) {
@@ -36,7 +39,7 @@ function addRecord(item) {
     phoneBookRecords = [
         ...phoneBookRecords,
         item
-    ]
+    ];
 }
 
 function removeRecord(name) {

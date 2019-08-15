@@ -24,3 +24,8 @@ html, body {
 .text-align-center {
   text-align: center;
 }
+
+.alternate-rows .mat-row:nth-child(even){
+  background-color: #f2f2f2;
+}
+
