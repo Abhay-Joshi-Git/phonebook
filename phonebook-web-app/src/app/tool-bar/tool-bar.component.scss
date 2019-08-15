@@ -1,0 +1,15 @@
+$logo-size: 50px;
+
+.logo {
+    height: $logo-size;
+    width: $logo-size;
+}
+
+.logo-link {
+    display: flex;
+    margin-right: 5px;
+}
+
+.tool-bar-title {
+    padding-right: $logo-size;
+}
