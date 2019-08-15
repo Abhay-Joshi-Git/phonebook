@@ -1,20 +1,34 @@
 const featureRootPath = 'phone-book';
+// { name: string;  phoneNumbers: number[] }
 let phoneBookRecords = [];
 const _ = require("lodash");
-const uuidv4 = require('uuid/v4');
 
-function getRecordById(id) {
-    return _.find(phoneBookRecords, { id })
+const notValidRecordErrorMessage = 'request phone number is not of valid structure';
+
+function getRecordByName(name) {
+    return _.find(phoneBookRecords, { name })
 }
 
-function getRecordByNumber(phoneNumber) {
-    return _.find(phoneBookRecords, { phoneNumber })
+function isNumberPresentInRecords(phoneNumber) {
+    return _.find(phoneBookRecords, (item) =>  item.phoneNumbers.includes(phoneNumber) )
 }
 
-function editRecord(id, item) {
-    var record = getRecordById(id);
-    if (record) {
-        _.assign(record, { ...item, id });
+function getRecordByNumbers(numbers) {
+    return _.find(phoneBookRecords, (item) =>  _.intersection(item.phoneNumbers, numbers) )
+}
+
+function isRecordValid(item) {
+    return item && !!item.name && (item.phoneNumbers && Array.isArray(item.phoneNumbers));
+}
+
+function editRecord(name, item) {
+    const index = phoneBookRecords.findIndex((item) => item.name === name);
+    if (index > -1) {
+        phoneBookRecords = [
+            phoneBookRecords.slice(0, index),
+            item,
+            phoneBookRecords.slice(index + 1, phoneBookRecords.length)
+        ]
     }
 }
 
@@ -25,12 +39,8 @@ function addRecord(item) {
     ]
 }
 
-function getNewId() {
-    return uuidv4();
-}
-
-function removeRecord(id) {
-    phoneBookRecords = _.reject(phoneBookRecords, (item) => item.id === id);
+function removeRecord(name) {
+    phoneBookRecords = _.reject(phoneBookRecords, (item) => item.name === name);
 }
 
 module.exports = (app) => {
@@ -38,23 +48,27 @@ module.exports = (app) => {
         res.send(phoneBookRecords);
     });
 
-    app.put(`/${featureRootPath}/:id`, (req, res) => {
-        const id = req.params.id;
-        console.log(' in ....', id, phoneBookRecords);
-        const item = getRecordById(id);
+    app.put(`/${featureRootPath}/:name`, (req, res) => {
+        const name = req.params.name;
+        console.log(' in ....', name, phoneBookRecords);
+        const item = getRecordByName(name);
         if (item) {
-            editRecord(id, req.body);
+            if (!isRecordValid(req.body)) {
+                res.status(400).send(notValidRecordErrorMessage);
+                return;
+            }
+            editRecord(name, req.body);
             res.send("ok");
         } else {
             res.status(400).send("record not found");
         }
     });
 
-    app.delete(`/${featureRootPath}/:id`, (req, res) => {
-        const id = req.params.id;
-        var item = getRecordById(id);
+    app.delete(`/${featureRootPath}/:name`, (req, res) => {
+        const name = req.params.name;
+        var item = getRecordByName(name);
         if (item) {
-            removeRecord(id);
+            removeRecord(name);
             res.send(item);
         } else {
             res.status(400).send("record not found");
@@ -62,16 +76,16 @@ module.exports = (app) => {
     });
 
     app.post(`/${featureRootPath}`, (req, res) => {
-        let newItem = {
+        const newItem = {
             name: req.body.name,
-            phoneNumber: req.body.phoneNumber
+            phoneNumbers: req.body.phoneNumbers
         };
-        console.log('post -- ', req.body);
-        if (!getRecordByNumber(newItem.name)) {
-            newItem = {
-                ...newItem,
-                id: getNewId()
-            };
+        console.log('post -- ', newItem);
+        if (!getRecordByNumbers(newItem.phoneNumbers)) {
+            if (!isRecordValid(newItem)) {
+                res.status(400).send(notValidRecordErrorMessage);
+                return;
+            }
             addRecord(newItem);
             res.send(newItem);
         } else {
