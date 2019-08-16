@@ -1,25 +1,66 @@
 <section>
-    <header>
+    <header class="text-align-center">
         <h3>{{title}}</h3>
     </header>
     <form
         [formGroup]="recordEditForm"
         (ngSubmit)="onSubmit()"
     >
-        <fieldset>
+        <fieldset [disabled]="loading">
             <mat-form-field>
                 <input
                     matInput
                     type="text"
                     placeholder="Name"
-                    [formControl]="recordEditForm.get('name')"
-                    name="name"
+                    formControlName="name"
                     required
                 />
-                <mat-error *ngIf="true">name is required</mat-error>
+                <mat-error>Name is required</mat-error>
             </mat-form-field>
+            <div>
+                <div class="phone-numbers-header">
+                    <label>Phone Numbers:</label>
+                    <span>
+                        <mat-icon
+                            aria-hidden="false"
+                            aria-label="add phone number"
+                            class="cursor-pointer mat-icon-margin-left mat-icon-vertical-baseline"
+                            color="accent"
+                            title="Add Phone Number"
+                            (click)="addPhoneNumber()"
+                        >
+                            add
+                        </mat-icon>
+                    </span>
+                </div>
+                <div *ngFor="let address of phoneNumbers.controls; let i=index">
+                    <div class="phone-number-fields">
+                        <mat-form-field>
+                            <input
+                                matInput
+                                type="text"
+                                [formControl]="phoneNumbers.controls[i]"
+                                required
+                            />
+                            <mat-error>Phone Number is required</mat-error>
+                        </mat-form-field>
+                        <span matSuffix class="phone-number-item-button-panel">
+                                <mat-icon
+                                    aria-hidden="false"
+                                    aria-label="remove phone number"
+                                    class="cursor-pointer mat-icon-margin-left mat-icon-vertical-baseline"
+                                    color="accent"
+                                    title="Remove Phone Number"
+                                    (click)="removePhoneNumber(i)"
+                                >
+                                    clear
+                                </mat-icon>
+                        </span>
+                    </div>
+                </div>
+            </div>
         </fieldset>
-        <div fxLayoutAlign="end center"fxLayoutGap="8px">
+        <div fxLayoutAlign="end center" class="form-button-container" fxLayoutGap="8px">
             <button type="submit"
                     mat-raised-button
                     color="primary"

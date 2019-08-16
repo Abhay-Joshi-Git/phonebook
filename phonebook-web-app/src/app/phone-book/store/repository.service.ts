@@ -25,4 +25,8 @@ export class PhoneBookRepository {
         });
     }
 
+    addPhoneBookRecord(record: PhoneBookRecord) {
+        return this.api.postPhoneBookRecord(record);
+    }
+
 }

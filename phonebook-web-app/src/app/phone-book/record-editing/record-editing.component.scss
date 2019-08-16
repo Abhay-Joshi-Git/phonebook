@@ -1,0 +1,23 @@
+.phone-number-fields {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.phone-numbers-header {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.form-button-container {
+    margin-top: 10px;
+}
+
+.mat-icon-margin-left {
+    margin-left: 10px;
+}
