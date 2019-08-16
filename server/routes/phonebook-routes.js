@@ -3,7 +3,7 @@ const featureRootPath = 'phone-book';
 let phoneBookRecords = [];
 const _ = require("lodash");
 
-const notValidRecordErrorMessage = 'request phone number is not of valid structure';
+const notValidRecordErrorMessage = 'request format is not valid';
 
 function getRecordByName(name) {
     return _.find(phoneBookRecords, { name });
@@ -28,9 +28,9 @@ function editRecord(name, item) {
     const index = phoneBookRecords.findIndex((item) => item.name === name);
     if (index > -1) {
         phoneBookRecords = [
-            phoneBookRecords.slice(0, index),
+            ...phoneBookRecords.slice(0, index),
             item,
-            phoneBookRecords.slice(index + 1, phoneBookRecords.length)
+            ...phoneBookRecords.slice(index + 1, phoneBookRecords.length)
         ]
     }
 }
@@ -53,15 +53,23 @@ module.exports = (app) => {
 
     app.put(`/${featureRootPath}/:name`, (req, res) => {
         const name = req.params.name;
-        console.log(' in ....', name, phoneBookRecords);
+        console.log(' in put ....', name, req.body);
         const item = getRecordByName(name);
         if (item) {
-            if (!isRecordValid(req.body)) {
+            const updatedItem = {
+                name: req.body.name,
+                phoneNumbers: req.body.phoneNumbers
+            };
+            if (name !== updatedItem.name && getRecordByName(updatedItem.name)) {
+                res.status(400).send("record already exists for this name");
+                return;
+            }
+            if (!isRecordValid(updatedItem)) {
                 res.status(400).send(notValidRecordErrorMessage);
                 return;
             }
-            editRecord(name, req.body);
-            res.send("ok");
+            editRecord(name, updatedItem);
+            res.send(updatedItem);
         } else {
             res.status(400).send("record not found");
         }
@@ -84,6 +92,11 @@ module.exports = (app) => {
             phoneNumbers: req.body.phoneNumbers
         };
         console.log('post -- ', newItem);
+        const isNameTaken = getRecordByName(newItem.name);
+        if (isNameTaken) {
+            res.status(400).send("record already exists for this name");
+            return;
+        }
         if (!getRecordByNumbers(newItem.phoneNumbers)) {
             if (!isRecordValid(newItem)) {
                 res.status(400).send(notValidRecordErrorMessage);

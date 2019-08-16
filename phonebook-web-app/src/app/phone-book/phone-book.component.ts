@@ -14,6 +14,7 @@ import {
     PhoneBookRecordEditData,
     PhoneBookRecordEditType
 } from './record-editing/record-editing.component';
+import { ConfirmationDialogComponent } from '../ui/confirmation-dialog/confirmation-dialog.component';
 
 interface PhoneBookRecordTableItem extends PhoneBookRecord {
     phoneNumbersStr: string;
@@ -29,7 +30,7 @@ export class PhoneBookComponent implements OnInit, OnDestroy {
     private breakPointsSubscription: Subscription = Subscription.EMPTY;
 
     isMobile = false;
-    columnsToDisplay = ['name', 'phoneNumbersStr'];
+    columnsToDisplay = ['name', 'phoneNumbersStr', 'actions'];
     dataSource = new MatTableDataSource<PhoneBookRecordTableItem>();
 
     @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -47,7 +48,7 @@ export class PhoneBookComponent implements OnInit, OnDestroy {
         this.phoneBookSubscription = this.phoneBookRepository.getAllRecords().pipe(
             map(records => records.map(record => ({
                 ...record,
-                phoneNumbersStr: record.phoneNumbers.join(', ')
+                phoneNumbersStr: record.phoneNumbers && record.phoneNumbers.join(', ')
             })))
         ).subscribe(records => {
             this.dataSource.data = records;
@@ -74,6 +75,35 @@ export class PhoneBookComponent implements OnInit, OnDestroy {
         };
         this.dialog.open(PhoneBookRecordEditingComponent, {
             data: editDialogData,
+        });
+    }
+
+    editRecord(row) {
+        console.log('editing...', row);
+        const editDialogData: PhoneBookRecordEditData = {
+            type: PhoneBookRecordEditType.EDIT,
+            record: {
+                name: row.name,
+                phoneNumbers: row.phoneNumbers
+            }
+        };
+        this.dialog.open(PhoneBookRecordEditingComponent, {
+            data: editDialogData,
+        });
+    }
+
+    deleteRecord(row) {
+        const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+            data: {
+                message: `Are you sure you want to delete the record ?`
+            },
+            autoFocus: false,
+            restoreFocus: true,
+        });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.phoneBookRepository.deletePhoneBookRecord(row.name).subscribe();
+            }
         });
     }
 }

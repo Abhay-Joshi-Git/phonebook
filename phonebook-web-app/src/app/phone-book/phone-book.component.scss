@@ -2,3 +2,14 @@
     font-weight: bolder;
     font-size: 1rem;
 }
+
+.action-cell {
+    flex-grow: 0;
+    min-width: 6rem;
+
+    button {
+        padding: 0px;
+        min-width: 40px;
+        border-radius: 50%;
+    }
+}

@@ -14,10 +14,16 @@ export class AddRecord implements Action {
     constructor(public readonly payload: PhoneBookRecord) {}
 }
 
+
+export interface EditRecordPayload {
+    name: string;
+    record: PhoneBookRecord;
+}
+
 export class EditRecord implements Action {
     readonly type = PhoneBookActionType.EDIT_RECORD;
 
-    constructor(public readonly payload: PhoneBookRecord) {}
+    constructor(public readonly payload: EditRecordPayload) {}
 }
 
 export class DeleteRecord implements Action {

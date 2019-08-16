@@ -3,10 +3,16 @@
         <h3>{{title}}</h3>
     </header>
     <form
+        fxLayout="column"
+        fxLayoutAlign="start center"
         [formGroup]="recordEditForm"
         (ngSubmit)="onSubmit()"
+        class="record-edit-form"
     >
-        <fieldset [disabled]="loading">
+        <mat-error *ngIf="recordEditForm.touched || recordEditForm.dirty">
+            {{getFormLevelError}}
+        </mat-error>
+        <fieldset [disabled]="loading" class="form-fieldset">
             <mat-form-field>
                 <input
                     matInput
@@ -18,7 +24,7 @@
                 <mat-error>Name is required</mat-error>
             </mat-form-field>
             <div>
-                <div class="phone-numbers-header">
+                <div fxLayout="row" fxLayoutAlign="space-between center">
                     <label>Phone Numbers:</label>
                     <span>
                         <mat-icon
@@ -29,12 +35,12 @@
                             title="Add Phone Number"
                             (click)="addPhoneNumber()"
                         >
-                            add
+                            add_circle
                         </mat-icon>
                     </span>
                 </div>
                 <div *ngFor="let address of phoneNumbers.controls; let i=index">
-                    <div class="phone-number-fields">
+                    <div fxLayout="row" fxLayoutAlign="space-between center">
                         <mat-form-field>
                             <input
                                 matInput
@@ -42,7 +48,12 @@
                                 [formControl]="phoneNumbers.controls[i]"
                                 required
                             />
-                            <mat-error>Phone Number is required</mat-error>
+                            <mat-error *ngIf="phoneNumbers.controls[i]?.errors?.required; else otherErrors">Phone Number is required</mat-error>
+                            <ng-template #otherErrors>
+                                <mat-error *ngIf="phoneNumbers.controls[i]?.errors?.invalidPhoneNumber">
+                                    Phone Number should be in valid format, for example - +44-2454-5233
+                                </mat-error>
+                            </ng-template>
                         </mat-form-field>
                         <span matSuffix class="phone-number-item-button-panel">
                                 <mat-icon
@@ -53,7 +64,7 @@
                                     title="Remove Phone Number"
                                     (click)="removePhoneNumber(i)"
                                 >
-                                    clear
+                                    remove_circle
                                 </mat-icon>
                         </span>
                     </div>

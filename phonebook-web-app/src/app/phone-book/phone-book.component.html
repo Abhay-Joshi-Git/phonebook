@@ -21,21 +21,40 @@
         </button>
         <mat-table [dataSource]="dataSource" class="phone-book-table mat-elevation-z8 color-alternate-rows" matSort>
             <ng-container matColumnDef="name">
-                <mat-header-cell *matHeaderCellDef mat-sort-header
-                    >Name</mat-header-cell
-                >
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
                 <mat-cell *matCellDef="let element">
                     <span fxHide.gt-xs class="mobile-label">Name:</span>
                     {{ element.name }}
                 </mat-cell>
             </ng-container>
             <ng-container matColumnDef="phoneNumbersStr">
-                <mat-header-cell *matHeaderCellDef mat-sort-header
-                    >Phone Numbers</mat-header-cell
-                >
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Phone Numbers</mat-header-cell>
                 <mat-cell *matCellDef="let element">
                     <span fxHide.gt-xs class="mobile-label">Phone Numbers:</span>
                     {{ element.phoneNumbersStr }}
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="actions">
+                <mat-header-cell class="action-cell" *matHeaderCellDef></mat-header-cell>
+                <mat-cell class="action-cell" *matCellDef="let row">
+                    <button mat-button>
+                        <mat-icon
+                            class="cursor-pointer"
+                            title="Edit record"
+                            (click)="editRecord(row)"
+                        >
+                            edit
+                        </mat-icon>
+                    </button>
+                    <button mat-button>
+                        <mat-icon
+                            class="cursor-pointer"
+                            title="Delete record"
+                            (click)="deleteRecord(row)"
+                        >
+                            delete
+                        </mat-icon>
+                    </button>
                 </mat-cell>
             </ng-container>
 

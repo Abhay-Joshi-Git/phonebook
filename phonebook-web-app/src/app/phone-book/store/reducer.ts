@@ -16,7 +16,7 @@ export function phoneBookReducer(state: PhoneBookState = PhoneBookInitialState, 
             const index = state.findIndex((item) => item.name === action.payload.name);
             return [
                 ...state.slice(0, index),
-                action.payload,
+                action.payload.record,
                 ...state.slice(index + 1, state.length)
             ];
 
