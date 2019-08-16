@@ -73,7 +73,7 @@ export class PhoneBookComponent implements OnInit, OnDestroy {
             type: PhoneBookRecordEditType.ADD
         };
         this.dialog.open(PhoneBookRecordEditingComponent, {
-            data: editDialogData
+            data: editDialogData,
         });
     }
 }

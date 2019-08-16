@@ -4,7 +4,8 @@ import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { phoneBookFeatureSelector } from './selectors';
 import { PhoneBookApiService } from '../api/api.service';
-import { SetRecords } from './actions';
+import { SetRecords, AddRecord } from './actions';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
@@ -26,7 +27,12 @@ export class PhoneBookRepository {
     }
 
     addPhoneBookRecord(record: PhoneBookRecord) {
-        return this.api.postPhoneBookRecord(record);
+        return this.api.postPhoneBookRecord(record).pipe(
+            tap(result => {
+                console.log('  ... adding ', result);
+                this.store.dispatch(new AddRecord(result));
+            })
+        );
     }
 
 }
