@@ -2,23 +2,19 @@
     <header>
         <h2 class="text-align-center">Phone Book</h2>
     </header>
-    <mat-form-field>
-        <input
+    <div
+        fxLayoutAlign="space-between center"
+    >
+        <mat-form-field>
+            <input
             matInput
             placeholder="Filter"
             (keyup)="applyFilter($event.target.value)"
         />
-    </mat-form-field>
+        </mat-form-field>
+        <pb-phone-book-actions></pb-phone-book-actions>
+    </div>
     <div class="mat-elevation-z8 relative">
-        <button
-            mat-mini-fab
-            class="fab-button-top-right add-button"
-            color="primary"
-            title="Add Record"
-            (click)="addRecord()"
-        >
-            <mat-icon aria-hidden="false" aria-label="add contact icon" class="mat-icon-vertical-baseline">add</mat-icon>
-        </button>
         <mat-table [dataSource]="dataSource" class="phone-book-table mat-elevation-z8 color-alternate-rows" matSort>
             <ng-container matColumnDef="name">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>

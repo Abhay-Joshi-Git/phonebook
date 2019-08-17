@@ -8,4 +8,5 @@ $logo-size: 50px;
 .logo-link {
     display: flex;
     margin-right: 5px;
+    min-width: $logo-size;
 }

@@ -13,6 +13,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { PhoneBookRecordEditingComponent } from './phone-book/record-editing/record-editing.component';
 import { UiModule } from './ui/ui.module';
+import { PhoneBookActionsComponent } from './phone-book/actions/actions.component';
 
 export function ngrxDevTools() {
   return environment.production ? [] : StoreDevtoolsModule.instrument();
@@ -24,6 +25,7 @@ export function ngrxDevTools() {
     PhoneBookComponent,
     ToolBarComponent,
     PhoneBookRecordEditingComponent,
+    PhoneBookActionsComponent,
   ],
   imports: [
     BrowserModule,

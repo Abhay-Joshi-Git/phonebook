@@ -69,15 +69,6 @@ export class PhoneBookComponent implements OnInit, OnDestroy {
         this.breakPointsSubscription.unsubscribe();
     }
 
-    addRecord() {
-        const editDialogData: PhoneBookRecordEditData = {
-            type: PhoneBookRecordEditType.ADD
-        };
-        this.dialog.open(PhoneBookRecordEditingComponent, {
-            data: editDialogData,
-        });
-    }
-
     editRecord(row) {
         console.log('editing...', row);
         const editDialogData: PhoneBookRecordEditData = {

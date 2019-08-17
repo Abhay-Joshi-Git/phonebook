@@ -50,4 +50,12 @@ export class PhoneBookRepository {
         );
     }
 
+    updatePhoneBookRecords(records: Array<PhoneBookRecord>) {
+        return this.api.syncRecords(records).pipe(
+            tap((result) => {
+                this.store.dispatch(new SetRecords(result));
+            })
+        );
+    }
+
 }

@@ -35,4 +35,13 @@ export class PhoneBookApiService {
     deletePhoneBookRecord(name: string) {
         return this.httpClient.delete(basePhoneBookAPIUrl + `/${name}`);
     }
+
+    syncRecords(records: Array<PhoneBookRecord>) {
+        const httpOptions = {
+            params: new HttpParams({
+                fromObject: { sync: 'true' }
+            })
+        };
+        return this.httpClient.put<Array<PhoneBookRecord>>(basePhoneBookAPIUrl, records, httpOptions);
+    }
 }

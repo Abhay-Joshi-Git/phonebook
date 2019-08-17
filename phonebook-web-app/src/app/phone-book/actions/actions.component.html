@@ -1,0 +1,56 @@
+<section
+    fxLayoutAlign="center center"
+    fxLayoutGap="10px"
+    aria-roledescription="phone book actions"
+>
+    <button
+        mat-mini-fab
+        class="button"
+        color="accent"
+        title="Save Phone Book"
+        (click)="savePhoneBook()"
+    >
+        <mat-icon
+            aria-hidden="false"
+            class="mat-icon-vertical-baseline"
+        >
+            save
+        </mat-icon>
+    </button>
+    <button
+        mat-mini-fab
+        class="button"
+        color="accent"
+        title="Upload Phone Book"
+        (click)="uploadPhoneBook()"
+    >
+        <input
+            type="file"
+            id="input"
+            hidden
+            #fileInput
+            (change)="handleFiles($event)"
+        />
+        <mat-icon
+            aria-hidden="false"
+            class="mat-icon-vertical-baseline"
+        >
+            unarchive
+        </mat-icon>
+    </button>
+    <button
+        mat-mini-fab
+        class="button"
+        color="primary"
+        title="Add Record"
+        (click)="addRecord()"
+    >
+        <mat-icon
+            aria-hidden="false"
+            aria-label="add contact icon"
+            class="mat-icon-vertical-baseline"
+        >
+            add
+        </mat-icon>
+    </button>
+</section>

@@ -20,6 +20,13 @@ function getRecordByNumbers(numbers) {
     })
 }
 
+function getRecordByNumbersOtherThanName(numbers, name) {
+    return _.find(phoneBookRecords, (item) =>  {
+        const commonNumbers = _.intersection(item.phoneNumbers, numbers);
+        return commonNumbers && commonNumbers.length && item.name !== name;
+    })
+}
+
 function isRecordValid(item) {
     return item && !!item.name && (item.phoneNumbers && Array.isArray(item.phoneNumbers));
 }
@@ -51,6 +58,31 @@ module.exports = (app) => {
         res.send(phoneBookRecords);
     });
 
+    app.put(`/${featureRootPath}`, (req, res) => {
+        console.log(' in put sync ....', req.query);
+        if (Array.isArray(req.body)) {
+            const uploadedRecords = [ ...req.body ];
+            uploadedRecords.forEach(record => {
+                const item = getRecordByName(record.name);
+                const updatedItem = {
+                    name: record.name,
+                    phoneNumbers: record.phoneNumbers
+                };
+                if (item) {
+                    if (!isRecordValid(updatedItem)) {
+                        return;
+                    }
+                    editRecord(record.name, updatedItem);
+                } else {
+                    addRecord(updatedItem);
+                }
+            });
+            res.send(phoneBookRecords);
+        } else {
+            res.status(400).send('request is not valid');
+        }
+    });
+
     app.put(`/${featureRootPath}/:name`, (req, res) => {
         const name = req.params.name;
         console.log(' in put ....', name, req.body);
@@ -62,6 +94,10 @@ module.exports = (app) => {
             };
             if (name !== updatedItem.name && getRecordByName(updatedItem.name)) {
                 res.status(400).send("record already exists for this name");
+                return;
+            }
+            if (getRecordByNumbersOtherThanName(updatedItem.phoneNumbers, name)) {
+                res.status(400).send("record already exists for this number");
                 return;
             }
             if (!isRecordValid(updatedItem)) {
