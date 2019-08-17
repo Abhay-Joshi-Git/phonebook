@@ -70,7 +70,6 @@ export class PhoneBookComponent implements OnInit, OnDestroy {
     }
 
     editRecord(row) {
-        console.log('editing...', row);
         const editDialogData: PhoneBookRecordEditData = {
             type: PhoneBookRecordEditType.EDIT,
             record: {

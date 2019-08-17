@@ -93,7 +93,6 @@ export class PhoneBookRecordEditingComponent implements OnInit {
       };
       this.loading = true;
       if (this.isEditing()) {
-        console.log('editing....', this.data.record.name, record);
         this.repositoryService.editPhoneBookRecord(this.data.record.name, record)
           .subscribe(this.onRecordEditedSuccess, this.onRecordEditingFailure);
       } else {
@@ -119,7 +118,6 @@ export class PhoneBookRecordEditingComponent implements OnInit {
 
   private onRecordEditingFailure = (error: HttpErrorResponse) => {
     this.loading = false;
-    console.log('error', error);
     this.recordEditForm.setErrors({
       form: 'Error - ' + error.error
     });

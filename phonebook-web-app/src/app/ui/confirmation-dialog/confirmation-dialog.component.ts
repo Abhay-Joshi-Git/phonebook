@@ -17,7 +17,6 @@ export class ConfirmationDialogComponent implements AfterViewInit {
   constructor(@Inject(MAT_DIALOG_DATA) public data: ConfirmationDialogData) { }
 
   ngAfterViewInit(): void {
-    console.log('this.noButton.nativeElement', this.noButton.nativeElement);
     this.noButton.nativeElement.focus();
   }
 
