@@ -9,10 +9,11 @@
             <input
             matInput
             placeholder="Filter"
+            [disabled]="isActivityInProgress"
             (keyup)="applyFilter($event.target.value)"
         />
         </mat-form-field>
-        <pb-phone-book-actions></pb-phone-book-actions>
+        <pb-phone-book-actions [disabled]="isActivityInProgress"></pb-phone-book-actions>
     </div>
     <div class="mat-elevation-z8 relative">
         <mat-table [dataSource]="dataSource" class="phone-book-table mat-elevation-z8 color-alternate-rows" matSort>
@@ -33,7 +34,10 @@
             <ng-container matColumnDef="actions">
                 <mat-header-cell class="action-cell" *matHeaderCellDef></mat-header-cell>
                 <mat-cell class="action-cell" *matCellDef="let row">
-                    <button mat-button>
+                    <button
+                        mat-button
+                        [disabled]="isActivityInProgress"
+                    >
                         <mat-icon
                             class="cursor-pointer"
                             title="Edit record"
@@ -42,7 +46,10 @@
                             edit
                         </mat-icon>
                     </button>
-                    <button mat-button>
+                    <button
+                        mat-button
+                        [disabled]="isActivityInProgress"
+                    >
                         <mat-icon
                             class="cursor-pointer"
                             title="Delete record"

@@ -9,6 +9,7 @@
         color="accent"
         title="Save Phone Book"
         (click)="savePhoneBook()"
+        [disabled]="disabled"
     >
         <mat-icon
             aria-hidden="false"
@@ -23,6 +24,7 @@
         color="accent"
         title="Upload Phone Book"
         (click)="uploadPhoneBook()"
+        [disabled]="disabled"
     >
         <input
             type="file"
@@ -44,6 +46,7 @@
         color="primary"
         title="Add Record"
         (click)="addRecord()"
+        [disabled]="disabled"
     >
         <mat-icon
             aria-hidden="false"

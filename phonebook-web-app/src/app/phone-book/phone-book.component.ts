@@ -5,7 +5,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, finalize } from 'rxjs/operators';
 
 import { PhoneBookRepository } from './store/repository.service';
 import { PhoneBookRecord } from './store/state';
@@ -30,6 +30,7 @@ export class PhoneBookComponent implements OnInit, OnDestroy {
     private breakPointsSubscription: Subscription = Subscription.EMPTY;
 
     isMobile = false;
+    isActivityInProgress = false;
     columnsToDisplay = ['name', 'phoneNumbersStr', 'actions'];
     dataSource = new MatTableDataSource<PhoneBookRecordTableItem>();
 
@@ -45,11 +46,16 @@ export class PhoneBookComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
+        this.subscribeForRecords();
+        this.initiateRecordFetching();
+    }
+
+    private subscribeForRecords() {
         this.phoneBookSubscription = this.phoneBookRepository.getAllRecords().pipe(
             map(records => records.map(record => ({
                 ...record,
                 phoneNumbersStr: record.phoneNumbers && record.phoneNumbers.join(', ')
-            })))
+            }))),
         ).subscribe(records => {
             this.dataSource.data = records;
         });
@@ -57,7 +63,13 @@ export class PhoneBookComponent implements OnInit, OnDestroy {
             this.isMobile = result.matches;
             this.dataSource.paginator = result.matches ? null : this.paginator;
         });
-        this.phoneBookRepository.fetchLatestRecords();
+    }
+
+    private initiateRecordFetching() {
+        this.isActivityInProgress = true;
+        this.phoneBookRepository.fetchLatestRecords().pipe(
+            finalize(() => this.isActivityInProgress = false)
+        ).subscribe();
     }
 
     applyFilter(filterValue) {
@@ -92,7 +104,10 @@ export class PhoneBookComponent implements OnInit, OnDestroy {
         });
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
-                this.phoneBookRepository.deletePhoneBookRecord(row.name).subscribe();
+                this.isActivityInProgress = true;
+                this.phoneBookRepository.deletePhoneBookRecord(row.name).pipe(
+                    finalize(() => this.isActivityInProgress = false)
+                ).subscribe();
             }
         });
     }

@@ -1,0 +1,5 @@
+<mat-progress-bar
+    color="primary"
+    mode="indeterminate"
+    [style.visibility]="(isInProgress$ | async) ? 'visible' : 'hidden'"
+></mat-progress-bar>

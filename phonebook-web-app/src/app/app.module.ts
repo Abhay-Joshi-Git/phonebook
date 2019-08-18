@@ -10,10 +10,12 @@ import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { appReducers } from './store';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { PhoneBookRecordEditingComponent } from './phone-book/record-editing/record-editing.component';
 import { UiModule } from './ui/ui.module';
 import { PhoneBookActionsComponent } from './phone-book/actions/actions.component';
+import { ProgressIndicatorComponent } from './progress-indicator/progress-indicator.component';
+import { HTTPRequestsInterceptor } from './http-interceptor.service';
 
 export function ngrxDevTools() {
   return environment.production ? [] : StoreDevtoolsModule.instrument();
@@ -26,6 +28,7 @@ export function ngrxDevTools() {
     ToolBarComponent,
     PhoneBookRecordEditingComponent,
     PhoneBookActionsComponent,
+    ProgressIndicatorComponent,
   ],
   imports: [
     BrowserModule,
@@ -38,7 +41,9 @@ export function ngrxDevTools() {
     StoreModule.forRoot(appReducers),
     ngrxDevTools(),
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: HTTPRequestsInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent],
   entryComponents: [
     PhoneBookRecordEditingComponent

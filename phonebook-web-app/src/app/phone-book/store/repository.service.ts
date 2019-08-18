@@ -21,9 +21,11 @@ export class PhoneBookRepository {
     }
 
     fetchLatestRecords() {
-        this.api.fetchPhoneBookRecords().subscribe(records => {
-            this.store.dispatch(new SetRecords(records));
-        });
+        return this.api.fetchPhoneBookRecords().pipe(
+            tap(records => {
+                this.store.dispatch(new SetRecords(records));
+            })
+        );
     }
 
     addPhoneBookRecord(record: PhoneBookRecord) {

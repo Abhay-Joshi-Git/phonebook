@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 import {
     PhoneBookRecordEditData,
     PhoneBookRecordEditType,
@@ -18,6 +18,7 @@ const phoneNumberSeparator = ' ';
     styleUrls: ['./actions.component.scss']
 })
 export class PhoneBookActionsComponent implements OnInit {
+    @Input() disabled = false;
     @ViewChild('fileInput', { read: ElementRef, static: true }) fileInput!: ElementRef;
 
     constructor(
