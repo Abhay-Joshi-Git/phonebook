@@ -1,10 +1,4 @@
-Phone Book
-
-
-
-aded proxy
-
 TODO -
 
-add ARIA attributes
+add support for theme toggle
 add i18n
