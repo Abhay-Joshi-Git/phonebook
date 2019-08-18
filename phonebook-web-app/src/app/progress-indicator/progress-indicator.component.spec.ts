@@ -1,14 +1,24 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ProgressIndicatorComponent } from './progress-indicator.component';
+import { ProgressIndicatorRepositoryService } from './store/repository.service';
+import { mock, instance } from 'ts-mockito';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+let repositoryService: ProgressIndicatorRepositoryService;
 
 describe('ProgressIndicatorComponent', () => {
   let component: ProgressIndicatorComponent;
   let fixture: ComponentFixture<ProgressIndicatorComponent>;
 
   beforeEach(async(() => {
+    repositoryService = mock(ProgressIndicatorRepositoryService);
+
     TestBed.configureTestingModule({
-      declarations: [ ProgressIndicatorComponent ]
+      declarations: [ ProgressIndicatorComponent ],
+      schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
+      providers: [
+        { provide: ProgressIndicatorRepositoryService, useFactory: () => instance(repositoryService) }
+      ]
     })
     .compileComponents();
   }));

@@ -33,7 +33,7 @@ export class PhoneBookApiService {
     }
 
     deletePhoneBookRecord(name: string) {
-        return this.httpClient.delete(basePhoneBookAPIUrl + `/${name}`);
+        return this.httpClient.delete<PhoneBookRecord>(basePhoneBookAPIUrl + `/${name}`);
     }
 
     syncRecords(records: Array<PhoneBookRecord>) {

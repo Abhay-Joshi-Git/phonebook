@@ -5,7 +5,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable, Subscription } from 'rxjs';
-import { map, finalize } from 'rxjs/operators';
+import { map, finalize, take } from 'rxjs/operators';
 
 import { PhoneBookRepository } from './store/repository.service';
 import { PhoneBookRecord } from './store/state';
@@ -102,7 +102,9 @@ export class PhoneBookComponent implements OnInit, OnDestroy {
             autoFocus: false,
             restoreFocus: true,
         });
-        dialogRef.afterClosed().subscribe(result => {
+        dialogRef.afterClosed().pipe(
+            take(1)
+        ).subscribe(result => {
             if (result) {
                 this.isActivityInProgress = true;
                 this.phoneBookRepository.deletePhoneBookRecord(row.name).pipe(

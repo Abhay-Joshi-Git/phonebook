@@ -63,7 +63,7 @@ export class PhoneBookRecordEditingComponent implements OnInit {
   }
 
   private createFormGroup() {
-    const nameValue = this.data.record ? this.data.record.name : 'test';
+    const nameValue = this.data.record ? this.data.record.name : '';
     const phoneNumbersValue = this.data.record ? this.data.record.phoneNumbers : [''];
     this.recordEditForm = this.formBuilder.group({
       name: [nameValue, Validators.required],
