@@ -1,10 +1,10 @@
-import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input, OnDestroy } from '@angular/core';
 import {
     PhoneBookRecordEditData,
     PhoneBookRecordEditType,
     PhoneBookRecordEditingComponent
 } from '../record-editing/record-editing.component';
-import { MatDialog, MatSnackBar } from '@angular/material';
+import { MatDialog, MatSnackBar, MatDialogRef } from '@angular/material';
 import { PhoneBookRepository } from '../store/repository.service';
 import { take } from 'rxjs/operators';
 import { saveAs } from 'file-saver';
@@ -17,7 +17,10 @@ const phoneNumberSeparator = ' ';
     templateUrl: './actions.component.html',
     styleUrls: ['./actions.component.scss']
 })
-export class PhoneBookActionsComponent implements OnInit {
+export class PhoneBookActionsComponent implements OnInit, OnDestroy {
+
+    private editDialogRef: MatDialogRef<PhoneBookRecordEditingComponent>;
+
     @Input() disabled = false;
     @ViewChild('fileInput', { read: ElementRef, static: true }) fileInput!: ElementRef;
 
@@ -33,7 +36,10 @@ export class PhoneBookActionsComponent implements OnInit {
         const editDialogData: PhoneBookRecordEditData = {
             type: PhoneBookRecordEditType.ADD
         };
-        this.dialog.open(PhoneBookRecordEditingComponent, {
+        if (this.editDialogRef) {
+          this.editDialogRef.close();
+        }
+        this.editDialogRef = this.dialog.open(PhoneBookRecordEditingComponent, {
             data: editDialogData
         });
     }
@@ -92,7 +98,9 @@ export class PhoneBookActionsComponent implements OnInit {
       reader.readAsText(selectedFile);
     }
 
-    updateRecords(records) {
-
+    ngOnDestroy(): void {
+      if (this.editDialogRef) {
+        this.editDialogRef.close();
+      }
     }
 }

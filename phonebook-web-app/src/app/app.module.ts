@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
@@ -16,6 +16,8 @@ import { UiModule } from './ui/ui.module';
 import { PhoneBookActionsComponent } from './phone-book/actions/actions.component';
 import { ProgressIndicatorComponent } from './progress-indicator/progress-indicator.component';
 import { HTTPRequestsInterceptor } from './http-interceptor.service';
+import { GlobalErrorHandler } from './error-handling/error-handler';
+import { ErrorDisplayComponent } from './error-handling/error-display/error-display.component';
 
 export function ngrxDevTools() {
   return environment.production ? [] : StoreDevtoolsModule.instrument();
@@ -29,6 +31,7 @@ export function ngrxDevTools() {
     PhoneBookRecordEditingComponent,
     PhoneBookActionsComponent,
     ProgressIndicatorComponent,
+    ErrorDisplayComponent,
   ],
   imports: [
     BrowserModule,
@@ -42,7 +45,8 @@ export function ngrxDevTools() {
     ngrxDevTools(),
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: HTTPRequestsInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: HTTPRequestsInterceptor, multi: true },
+    { provide: ErrorHandler, useClass: GlobalErrorHandler }
   ],
   bootstrap: [AppComponent],
   entryComponents: [

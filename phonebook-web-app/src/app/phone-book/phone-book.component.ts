@@ -3,7 +3,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Observable, Subscription } from 'rxjs';
 import { map, finalize, take } from 'rxjs/operators';
 
@@ -28,6 +28,7 @@ interface PhoneBookRecordTableItem extends PhoneBookRecord {
 export class PhoneBookComponent implements OnInit, OnDestroy {
     private phoneBookSubscription: Subscription = Subscription.EMPTY;
     private breakPointsSubscription: Subscription = Subscription.EMPTY;
+    private editDialogRef: MatDialogRef<PhoneBookRecordEditingComponent | ConfirmationDialogComponent>;
 
     isMobile = false;
     isActivityInProgress = false;
@@ -79,6 +80,9 @@ export class PhoneBookComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         this.phoneBookSubscription.unsubscribe();
         this.breakPointsSubscription.unsubscribe();
+        if (this.editDialogRef) {
+            this.editDialogRef.close();
+        }
     }
 
     editRecord(row) {
@@ -89,20 +93,26 @@ export class PhoneBookComponent implements OnInit, OnDestroy {
                 phoneNumbers: row.phoneNumbers
             }
         };
-        this.dialog.open(PhoneBookRecordEditingComponent, {
+        if (this.editDialogRef) {
+            this.editDialogRef.close();
+        }
+        this.editDialogRef = this.dialog.open(PhoneBookRecordEditingComponent, {
             data: editDialogData,
         });
     }
 
     deleteRecord(row) {
-        const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+        if (this.editDialogRef) {
+            this.editDialogRef.close();
+        }
+        this.editDialogRef = this.dialog.open(ConfirmationDialogComponent, {
             data: {
                 message: `Are you sure you want to delete the record ?`
             },
             autoFocus: false,
             restoreFocus: true,
         });
-        dialogRef.afterClosed().pipe(
+        this.editDialogRef.afterClosed().pipe(
             take(1)
         ).subscribe(result => {
             if (result) {
@@ -113,4 +123,6 @@ export class PhoneBookComponent implements OnInit, OnDestroy {
             }
         });
     }
+
+
 }
