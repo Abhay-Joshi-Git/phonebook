@@ -7,11 +7,19 @@
 }
 
 .record-edit-form {
-    width: 20rem;
     overflow-y: auto;
 }
 
 .form-fieldset {
-    width: 15rem;
     border: none;
+}
+
+@media screen and (min-width: 599px) {
+    .record-edit-form {
+        width: 20rem;
+    }
+
+    .form-fieldset {
+        width: 15rem;
+    }
 }

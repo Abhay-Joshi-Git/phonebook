@@ -19,25 +19,28 @@
         <mat-table [dataSource]="dataSource" class="phone-book-table mat-elevation-z8 color-alternate-rows" matSort>
             <ng-container matColumnDef="name">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
-                <mat-cell *matCellDef="let element">
+                <mat-cell [class.mobile-cell]="isMobile" *matCellDef="let element">
                     <span fxHide.gt-xs class="mobile-label">Name:</span>
                     {{ element.name }}
                 </mat-cell>
             </ng-container>
             <ng-container matColumnDef="phoneNumbersStr">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Phone Numbers</mat-header-cell>
-                <mat-cell *matCellDef="let element">
+                <mat-cell [class.mobile-cell]="isMobile" *matCellDef="let element">
                     <span fxHide.gt-xs class="mobile-label">Phone Numbers:</span>
                     {{ element.phoneNumbersStr }}
                 </mat-cell>
             </ng-container>
             <ng-container matColumnDef="actions">
                 <mat-header-cell class="action-cell" *matHeaderCellDef></mat-header-cell>
-                <mat-cell class="action-cell" *matCellDef="let row">
+                <mat-cell [class.mobile-cell]="isMobile" [class.action-cell]="!isMobile" *matCellDef="let row">
                     <button
                         mat-button
+                        [color]="isMobile ? 'primary': ''"
+                        [ngClass]="{'mat-raised-button': isMobile, 'action-button-mobile': isMobile}"
                         [disabled]="isActivityInProgress"
                     >
+                        <span *ngIf="isMobile">Edit</span>
                         <mat-icon
                             class="cursor-pointer"
                             title="Edit record"
@@ -48,8 +51,11 @@
                     </button>
                     <button
                         mat-button
+                        [color]="isMobile ? 'primary': ''"
+                        [ngClass]="{'mat-raised-button': isMobile, 'action-button-mobile': isMobile}"
                         [disabled]="isActivityInProgress"
                     >
+                        <span *ngIf="isMobile">Delete</span>
                         <mat-icon
                             class="cursor-pointer"
                             title="Delete record"
@@ -67,7 +73,7 @@
             ></mat-header-row>
             <mat-row
                 fxLayout.lt-sm="column"
-                fxLayoutAlign.lt-sm="start start"
+                fxLayoutAlign.lt-sm="start stretch"
                 [class.mat-card]="isMobile"
                 *matRowDef="let myRowData; columns: columnsToDisplay"
             ></mat-row>

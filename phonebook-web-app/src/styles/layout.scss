@@ -12,3 +12,12 @@ html, body {
     position: relative;
 }
 
+.display-none {
+    display: none;
+}
+
+@media screen and (max-width: 599px) {
+    .mat-dialog-container {
+        padding: 1.5rem 0px !important;
+    }
+}
