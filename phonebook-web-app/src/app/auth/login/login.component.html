@@ -1,0 +1,58 @@
+<section fxLayout="column" fxLayoutAlign.gt-xs="center center">
+    <header fxLayout="row" fxLayoutAlign="center">
+        <h2>Login</h2>
+    </header>
+    <form
+        fxLayout="column"
+        fxLayoutAlign.gt-xs="center stretch"
+        fxLayoutAlign.lt-sm="center center"
+        fxFlexFill
+        [formGroup]="loginForm"
+        (ngSubmit)="onSubmit()"
+        class="short-width-wrapper"
+    >
+        <fieldset
+            fxFlexFill
+            [disabled]="loading"
+            fxLayout="column"
+            fxLayoutAlign="center stretch"
+            class="fieldset"
+        >
+            <mat-error *ngIf="formError" class="error-wrapper">
+                {{ formError }}
+            </mat-error>
+            <mat-form-field>
+                <input
+                    matInput
+                    type="userName"
+                    placeholder="userName"
+                    formControlName="userName"
+                    name="userName"
+                    required
+                />
+                <mat-error *ngIf="true">userName is required</mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <input
+                    matInput
+                    type="password"
+                    placeholder="password"
+                    formControlName="password"
+                    name="password"
+                    required
+                />
+                <mat-error *ngIf="true">password is required</mat-error>
+            </mat-form-field>
+            <div fxFlexFill fxLayoutAlign="end center" fxLayoutGap="8px">
+                    <button
+                        type="submit"
+                        mat-raised-button
+                        color="primary"
+                        [disabled]="loginForm.invalid || loading"
+                    >
+                        Login
+                    </button>
+            </div>
+        </fieldset>
+    </form>
+</section>

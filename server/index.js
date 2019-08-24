@@ -1,21 +1,30 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
+const expressJwt = require('express-jwt');
+const { isRevokedToken } = require('./logout.service');
+const jwtSecret = process.env.JWT_SECRET;
+const { getTokenByRequest }  = require('./parse-token.service');
+
+function isRevokedCallback(req, payload, done){
+  const token = getTokenByRequest(req);
+  return done(null, isRevokedToken(token));
+};
+
+const jwtMiddleWare = expressJwt({
+  secret: jwtSecret,
+  isRevoked: isRevokedCallback
+}).unless({path: ['/token', '/login']})
 
 let app = express();
+app.use(cors());
+app.use(jwtMiddleWare);
 app.use(bodyParser.json());
 
-require('./routes/phonebook-routes')(app);
-
-// if (process.env.NODE_ENV === 'production') {
-//   app.use(express.static('client/build'));
-
-//   const path = require('path');
-//   app.get('*', (req, res) => {
-//     res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
-//   });
-// }
-
 const PORT = process.env.PORT || 8080;
+
+require('./routes/phonebook-routes')(app);
+require('./routes/login-routes')(app, jwtSecret);
 
 app.listen(PORT, () => {
   console.log('server started at 8080');

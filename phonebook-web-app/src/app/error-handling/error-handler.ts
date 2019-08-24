@@ -2,6 +2,7 @@ import { ErrorHandler, Injector, Injectable } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
+import { throwError } from 'rxjs';
 
 @Injectable()
 export class GlobalErrorHandler implements ErrorHandler {

@@ -18,6 +18,7 @@ import { ProgressIndicatorComponent } from './progress-indicator/progress-indica
 import { HTTPRequestsInterceptor } from './http-interceptor.service';
 import { GlobalErrorHandler } from './error-handling/error-handler';
 import { ErrorDisplayComponent } from './error-handling/error-display/error-display.component';
+import { AuthModule } from './auth/auth.module';
 
 export function ngrxDevTools() {
   return environment.production ? [] : StoreDevtoolsModule.instrument();
@@ -41,6 +42,7 @@ export function ngrxDevTools() {
     UiModule,
     HttpClientModule,
     AppRoutingModule,
+    AuthModule.forRoot(),
     StoreModule.forRoot(appReducers),
     ngrxDevTools(),
   ],
