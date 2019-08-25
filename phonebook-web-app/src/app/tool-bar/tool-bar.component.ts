@@ -1,4 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthState } from '../auth/store/state';
+import { Store } from '@ngrx/store';
+import { AppState } from '../store';
+import { Observable } from 'rxjs';
+import { isAuthSelector } from '../auth/store/selectors';
 
 @Component({
     selector: 'pb-tool-bar',
@@ -6,7 +11,12 @@ import { Component, OnInit } from '@angular/core';
     styleUrls: ['./tool-bar.component.scss']
 })
 export class ToolBarComponent implements OnInit {
-    constructor() {}
+    isLoggedIn$: Observable<boolean>;
+    constructor(
+        private store: Store<AppState>
+    ) {}
 
-    ngOnInit() {}
+    ngOnInit() {
+        this.isLoggedIn$ = this.store.select(isAuthSelector);
+    }
 }

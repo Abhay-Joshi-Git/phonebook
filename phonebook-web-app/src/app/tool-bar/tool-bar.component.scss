@@ -7,6 +7,14 @@ $logo-size: 50px;
 
 .logo-link {
     display: flex;
-    margin-right: 5px;
     min-width: $logo-size;
+}
+
+.menu-item-label {
+    margin-right: 10px;
+}
+
+.toolbar-button {
+    margin-right: 10px;
+    font-size: 1.25rem;
 }

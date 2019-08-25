@@ -1,10 +1,33 @@
 <mat-toolbar color="primary" fxLayoutAlign="space-between center">
-    <a routerLink="/" class="logo-link">
+    <a routerLink="/" class="logo-link toolbar-button">
         <img src="assets/images/phone-book-logo.jpg" class="logo"/>
     </a>
-    <span class="right-icon-bar">
-        <mat-icon class="cursor-pointer" title="Settings">
-            settings
-        </mat-icon>
+    <span class="right-icon-bar" fxLayoutAlign="end center">
+        <button *ngIf="!(isLoggedIn$ | async)"
+                mat-button
+                class="cursor-pointer toolbar-button"
+        >
+            Sign in
+        </button>
+        <button *ngIf="(isLoggedIn$ | async)"
+                class="cursor-pointer"
+                mat-icon-button
+                [matMenuTriggerFor]="personMenu"
+                aria-label="person menu expansion"
+        >
+            <mat-icon>person</mat-icon>
+        </button>
+        <mat-menu #personMenu="matMenu">
+            <button mat-menu-item fxLayoutAlign="end center">
+                <span class="menu-item-label">Logout</span>
+                <mat-icon>exit_to_app</mat-icon>
+            </button>
+            <button mat-menu-item fxLayoutAlign="end center">
+                <span class="menu-item-label">Settings</span>
+                <mat-icon class="cursor-pointer" title="Settings">
+                    settings
+                </mat-icon>
+            </button>
+        </mat-menu>
     </span>
 </mat-toolbar>
