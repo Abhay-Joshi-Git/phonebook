@@ -25,6 +25,10 @@ const PORT = process.env.PORT || 8080;
 
 require('./routes/phonebook-routes')(app);
 require('./routes/login-routes')(app, jwtSecret);
+app.get('/get-user', (req, res) => {
+  const { name } = req.user;
+  res.send({ name });
+});
 
 app.listen(PORT, () => {
   console.log('server started at 8080');

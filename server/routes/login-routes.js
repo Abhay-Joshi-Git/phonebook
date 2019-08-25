@@ -19,11 +19,6 @@ module.exports = (app, jwtSecret) => {
         });
     });
 
-    app.get('/isloggedin', (req, res) => {
-        const { name } = req.user;
-        res.send({ name });
-    });
-
     app.post('/logout', (req, res) => {
         const token = getTokenByRequest(req)
         if (token) {

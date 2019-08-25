@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Token } from './token.service';
+import { User } from './store/state';
+import { catchError, map } from 'rxjs/operators';
+import { of, throwError } from 'rxjs';
 
 @Injectable()
 export class AuthAPIService {
@@ -15,5 +18,9 @@ export class AuthAPIService {
 
     logout() {
         return this.httpClient.post('/api/logout', null);
+    }
+
+    getLoggedInUser() {
+        return this.httpClient.get<User>('/api/get-user');
     }
 }

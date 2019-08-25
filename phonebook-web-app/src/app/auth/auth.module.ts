@@ -24,6 +24,7 @@ import { AuthHTTPInterceptor } from './auth-http-interceptor.service';
     FlexLayoutModule,
     HttpClientModule,
     AuthRoutingModule,
+    StoreModule.forFeature(AuthStateFeatureName, authReducer)
   ],
   providers: [
     AuthAPIService,
@@ -31,7 +32,6 @@ import { AuthHTTPInterceptor } from './auth-http-interceptor.service';
 })
 export class AuthModule {
   static forRoot() {
-    StoreModule.forFeature(AuthStateFeatureName, authReducer);
     return {
       ngModule: AuthModule,
       providers: [

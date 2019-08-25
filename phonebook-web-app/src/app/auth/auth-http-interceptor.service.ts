@@ -4,6 +4,13 @@ import { Injectable } from '@angular/core';
 import { TokenService } from './token.service';
 import { catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { some } from 'lodash-es';
+
+const whiteListRoutes = ['get-user', 'isloggedin'];
+
+const isWhiteListURL = (url) => {
+    return some(whiteListRoutes, (route) => url.includes(route));
+};
 
 @Injectable()
 export class AuthHTTPInterceptor implements HttpInterceptor {
@@ -20,7 +27,8 @@ export class AuthHTTPInterceptor implements HttpInterceptor {
         return next.handle(newReq).pipe(
             catchError(error => {
                 if (error instanceof HttpErrorResponse) {
-                    if (error.status === 401) {
+                    if (error.status === 401 && !isWhiteListURL(newReq.url)) {
+                        console.log(' in quth interceptor navigating ...... ', newReq.url);
                         this.router.navigate(['login']);
                     }
                 }
